@@ -1,0 +1,49 @@
+#!/bin/python3
+import sys
+import os
+
+def getSysCallDict():
+    #reading the command output
+    cmd="echo '#include <sys/syscall.h>' | gcc -dD -E -"
+    cmdOut=os.popen(cmd).read()
+    del cmd
+    #split the string in line
+    tmpSysCallArr=cmdOut.split("\n")
+    del cmdOut
+    #remove all linest that doesent do not contain a syscall
+    sysCallSubstrig="#define __NR_"
+    sysCallArr=[]
+    for line in tmpSysCallArr:
+        if(sysCallSubstrig in line):
+            sysCallArr.append(line)
+    del tmpSysCallArr
+    #removeing sysCallSubstrig from lines
+    for i in range(len(sysCallArr)):
+        sysCallArr[i]=sysCallArr[i][len(sysCallSubstrig):]
+    del sysCallSubstrig
+    #spliting lines in sysCall name and number
+    sysCallDict=dict()
+    for line in sysCallArr:
+        temp=line.split(" ")
+        sysCallDict[temp[0]]=temp[1]
+    del sysCallArr
+    return sysCallDict
+
+def main(arg):
+    #error
+    if(len(arg)!=1):
+        print("Incorrect usage: only one parameter is neaded.")
+        return
+    arg=arg[0]
+    sysCallDict=getSysCallDict()
+    #matching the caases
+    if(arg in sysCallDict.keys()):
+        print(sysCallDict[arg])
+        return
+    elif(arg in sysCallDict.values()):
+        print(list(sysCallDict.keys())[list(sysCallDict.values()).index(arg)])
+        return
+    print("Syscall not find")
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
