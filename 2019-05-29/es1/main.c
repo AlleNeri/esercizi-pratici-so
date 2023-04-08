@@ -74,7 +74,7 @@ void * consumer_routine(void * args) {
 	semval_t semval;
 	while(True) {
 		read(semaphoreFull, &semval, sizeof(semval_t));
-		printf("The nuber is: %d\n",buffer);
+		printf("The number is: %d\n",buffer);
 		printf("Ok to write\n");
 		semval=1;
 		sleep(rand()%5);
