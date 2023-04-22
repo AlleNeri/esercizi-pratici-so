@@ -1,2 +1,4 @@
-#.out file
+#.out files
 *.out
+#object files
+*.o
