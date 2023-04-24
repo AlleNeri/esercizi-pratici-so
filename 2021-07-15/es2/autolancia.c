@@ -16,9 +16,6 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
-//lib directory absolute path
-#define libDir "/public/"
-
 /**
  * Execute a shared lib.
  * @param path path to the shared lib.
@@ -29,7 +26,7 @@ void execSharedLib(char *, int, char **);
 
 /**
  * Try to execute the file in a son process.
- * @param path path to the file.
+ * @param libPath path to the file.
  * @param argv argv for the son.
  * @return -1 if the execution went wrong.
  */
@@ -40,21 +37,17 @@ int main(int argc, char ** argv) {
 	if(argc<2) err(EXIT_FAILURE, "more arguments needed");
 	char * file=argv[1];
 	//create the file absolute path
-	char * filePath=malloc(strlen(libDir)+strlen(file)+1);
-	filePath=strcpy(filePath, libDir);
+	char * filePath=malloc(strlen(file)+3);
+	filePath=strcpy(filePath, "./");
 	filePath=strcat(filePath, file);
 	//try to execute the file
-	if(tryToExec(file, argv)) exit(EXIT_SUCCESS);
+	if(tryToExec(filePath, argv)) exit(EXIT_SUCCESS);
 	//execute the shared lib
-	else execSharedLib(file, argc, argv);
+	else execSharedLib(filePath, argc, argv);
 	exit(EXIT_SUCCESS);
 }
 
-void execSharedLib(char * lib, int argc, char ** argv) {
-	//create the file absolute path
-	char * libPath=malloc(strlen(libDir)+strlen(lib)+1);
-	libPath=strcpy(libPath, libDir);
-	libPath=strcat(libPath, lib);
+void execSharedLib(char * libPath, int argc, char ** argv) {
 	//opening the lib
 	void * handle=dlopen(libPath, RTLD_LAZY);
 	//error
@@ -67,6 +60,8 @@ void execSharedLib(char * lib, int argc, char ** argv) {
 	if(error!=NULL) err(EXIT_FAILURE, "dlsym: %s", error);
 	//executing the lib
 	int res=libMain(argc, argv);
+	//close lib
+	dlclose(handle);
 }
 
 int tryToExec(char * path, char ** argv) {
@@ -78,7 +73,6 @@ int tryToExec(char * path, char ** argv) {
 	else {
 		int status=0;
 		waitpid(pId, &status, 0);
-		printf("status: %d, %d\n", status, WIFEXITED(status));
 		return WIFEXITED(status);
 	}
 }

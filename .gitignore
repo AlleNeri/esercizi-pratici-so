@@ -2,3 +2,5 @@
 *.out
 #object files
 *.o
+#shared lib
+*.so

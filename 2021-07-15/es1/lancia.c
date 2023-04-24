@@ -13,16 +13,13 @@
 #include <string.h>
 #include <unistd.h>
 
-//lib directory absolute path
-#define libDir "/public/"
-
 int main(int argc, char ** argv) {
 	//argc error
 	if(argc<2) err(EXIT_FAILURE, "more arguments needed");
 	char * lib=argv[1];
 	//create the file absolute path
-	char * libPath=malloc(strlen(libDir)+strlen(lib)+1);
-	libPath=strcpy(libPath, libDir);
+	char * libPath=malloc(strlen(lib)+3);
+	libPath=strcpy(libPath, "./");
 	libPath=strcat(libPath, lib);
 	//opening the lib
 	void * handle=dlopen(libPath, RTLD_LAZY);
@@ -36,5 +33,7 @@ int main(int argc, char ** argv) {
 	if(error!=NULL) err(EXIT_FAILURE, "dlsym: %s", error);
 	//executing the lib
 	int res=libMain(argc, argv);
+	//closing the lib
+	dlclose(handle);
 	exit(EXIT_SUCCESS);
 }
