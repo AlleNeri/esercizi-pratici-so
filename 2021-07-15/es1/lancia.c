@@ -13,6 +13,8 @@
 #include <string.h>
 #include <unistd.h>
 
+typedef int (* main_t) (int, char **);
+
 int main(int argc, char ** argv) {
 	//argc error
 	if(argc<2) err(EXIT_FAILURE, "more arguments needed");
@@ -27,7 +29,7 @@ int main(int argc, char ** argv) {
 	if(!handle) err(EXIT_FAILURE, "dlopen handle");
 	dlerror();
 	//getting the lib
-	int (*libMain)(int,char **)=dlsym(handle, "main");
+	main_t libMain=dlsym(handle, "main");
 	//error
 	char * error=dlerror();
 	if(error!=NULL) err(EXIT_FAILURE, "dlsym: %s", error);
