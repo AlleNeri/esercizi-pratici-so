@@ -2,17 +2,21 @@
 import os, sys
 from stat import S_ISDIR
 
+#hash table
 files=dict()
 
 def findPhLink(d):
     """Recursively read the tree"""
+    #read all the directory entry
     for f in os.listdir(d):
         filePath=os.path.join(d, f)
         fileStat=os.stat(filePath)
         fileInod=fileStat.st_ino
+        #adding to the hash table a entry
         if(files.get(fileInod)==None):
             files[fileInod]=[]
         files[fileInod].append(filePath)
+        #recursive call
         if S_ISDIR(fileStat.st_mode):
             findPhLink(filePath)
 
