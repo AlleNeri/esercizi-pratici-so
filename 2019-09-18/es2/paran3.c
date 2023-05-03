@@ -7,6 +7,7 @@
 #include <sys/wait.h>
 
 #include "../../lib/list.h"
+#include "../../lib/bool.h"
 
 //delimitation string
 #define DELIM "//"
@@ -31,7 +32,7 @@ List cmdsFromArgv(int, char **);
  * Execute in parallel a list of commands.
  * @param cmds commands list.
  */
-void para(List);
+void paran3(List);
 
 int main(int argc, char ** argv) {
 	//error
@@ -39,7 +40,7 @@ int main(int argc, char ** argv) {
 	//get the list of commands
 	List cmdsList=cmdsFromArgv(argc-1, &argv[1]);
 	//execute the list of commands
-	para(cmdsList);
+	paran3(cmdsList);
 	exit(EXIT_SUCCESS);
 }
 
@@ -70,9 +71,11 @@ List cmdsFromArgv(int argc, char ** argv) {
 	return splitString(c, DELIM);
 }
 
-void para(List cmds) {
+void paran3(List cmds) {
 	//iterate on the commands
 	List iterator=cmds;
+	//proc counter
+	int pCount=0;
 	do {
 		//create a son process to execute a command
 		pid_t pId=fork();
@@ -85,6 +88,12 @@ void para(List cmds) {
 			//returns only if error
 			exit(EXIT_FAILURE);
 		}
+		else {
+			pCount++;
+			int status;
+			if(pCount>=3) wait(&status);
+		}
+
 	} while((iterator=iterator->next)!=cmds);
 	//wait for all the children to end
 	int status;

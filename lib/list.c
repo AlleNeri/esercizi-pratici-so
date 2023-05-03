@@ -33,12 +33,12 @@ List addListNode(List l, ListNode * n) {
 	return l;
 }
 
-bool removeListNode(List l, ListNode * n) {
+void * removeListNode(List * l, ListNode * n) {
 	//errors
-	if(n==NULL || n->next==NULL || n->prev==NULL) return False;
-	if((n->next==n && n->prev!=n) || (n->next!=n && n->prev==n)) return False;
+	if(n==NULL || n->next==NULL || n->prev==NULL) return NULL;
+	if((n->next==n && n->prev!=n) || (n->next!=n && n->prev==n)) return NULL;
 	//case of removing head
-	if(l==n) l=n->next;
+	if((*l)==n) (*l)=n->next;
 	//case with only one element
 	if(n->next==n && n->prev==n) l=NULL;
 	//full list case
@@ -46,9 +46,9 @@ bool removeListNode(List l, ListNode * n) {
 		n->prev->next=n->next;
 		n->next->prev=n->prev;
 	}
-	free(n->data);
+	void * ret=n->data;
 	free(n);
-	return True;
+	return ret;
 }
 
 bool mergeList(List l1, List l2) {
@@ -64,11 +64,22 @@ bool mergeList(List l1, List l2) {
 	return True;
 }
 
-bool removeList(List l) {
+bool removeList(List * l, bool freeData) {
 	//delete all nodes
-	while(!isEmptyList(l))
+	int i=0;
+	/*
+	List iter=*l;
+	do printf("%x\t", iter);
+	while((iter=iter->next)!=*l);
+	printf("\n");
+	*/
+	while(!isEmptyList(*l)) {
 		//errors checking
-		if(!removeListNode(l, l)) return False;
+		//printf("\t[DEBUG] Removing: n=%x={ prev: %x, next: %x }\n", (*l), (*l)->prev, (*l)->next);
+		void * data=removeListNode(l, (*l));
+		if(freeData) free(data);
+		//printf("\t[DEBUG] Removed. Next: %x\n\tIteration: %d\n", (*l), ++i);
+	}
 	return True;
 }
 

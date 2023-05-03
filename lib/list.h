@@ -42,11 +42,11 @@ List addListNode(List, ListNode *);
 
 /**
  * Removing the node from his list. It also delete the data memory location.
- * @param l the List.
+ * @param l the pointer to the List.
  * @param n the ListNode.
- * @return the operation result.
+ * @return the data in the node(free it if necessary), NULL if something gose wrong.
  */
-bool removeListNode(List, ListNode *);
+void * removeListNode(List *, ListNode *);
 
 /**
  * Merge two lists.
@@ -59,9 +59,10 @@ bool mergeList(List, List);
 /**
  * Removing the full list.
  * @param l the List.
+ * @param freeData true if is necessary to free the data, false otherwise.
  * @return the operation result.
  */
-bool removeList(List);
+bool removeList(List *, bool);
 
 /**
  * List length.
