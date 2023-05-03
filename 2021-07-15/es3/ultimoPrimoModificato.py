@@ -1,5 +1,5 @@
 import os, sys
-from stat import *
+from stat import S_ISDIR
 
 class File:
     path: str
