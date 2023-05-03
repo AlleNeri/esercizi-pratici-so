@@ -62,3 +62,18 @@ bool mergeList(List, List);
  * @return the operation result.
  */
 bool removeList(List);
+
+/**
+ * List length.
+ * @param l the list.
+ * @return the length.
+ */
+int listLen(List);
+
+/**
+ * List to array. ATTENTION: it will be an array of ptr to the same object of the list.
+ * @param l the list.
+ * @param len the array length.
+ * @return the array.
+ */
+void ** listToArray(List, int *);

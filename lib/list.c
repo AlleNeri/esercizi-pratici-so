@@ -1,4 +1,5 @@
 #include "./list.h"
+#include <stdio.h>
 
 ListNode * createListNode() {
 	ListNode * n=malloc(sizeof(ListNode));
@@ -69,4 +70,29 @@ bool removeList(List l) {
 		//errors checking
 		if(!removeListNode(l, l)) return False;
 	return True;
+}
+
+int listLen(List l) {
+	//empty list case
+	if(isEmptyList(l)) return 0;
+	//length counter
+	int len=0;
+	//counting
+	List iterator=l;
+	do len++;
+	while((iterator=iterator->next)!=l);
+	return len;
+}
+
+void ** listToArray(List l, int * len) {
+	//length of the array
+	*len=listLen(l);
+	//allocate the array
+	void ** arr=malloc(sizeof(void *)*(*len));
+	//populate the array
+	int i=0;
+	List iterator=l;
+	do arr[i++]=iterator->data;
+	while((iterator=iterator->next)!=l);
+	return arr;
 }
