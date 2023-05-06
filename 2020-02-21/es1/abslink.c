@@ -13,7 +13,7 @@ char * getDir(char *);
 
 int main(int argc, char ** argv) {
 	//errors
-	if(argc<2) err(EXIT_FAILURE, "argv");
+	if(argc!=2) err(EXIT_FAILURE, "argv");
 	//alising
 	char * linkPath=argv[1];
 	//get the real path
