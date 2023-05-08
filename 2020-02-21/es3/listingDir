@@ -1,0 +1,35 @@
+#/bin/python
+
+import collections
+import os, sys
+
+def getAllFiles(d):
+    files=[]
+    for f in os.listdir(d):
+        if os.path.isfile(os.path.join(d, f)):
+            files.append(f)
+    return files
+
+def listingDirSortedByExt(d):
+    files=getAllFiles(d)
+    extFile=dict()
+    for file in files:
+        _, ext=os.path.splitext(file)
+        if extFile.get(ext)==None:
+            extFile[ext]=[]
+        extFile[ext].append(file)
+    ordExt=collections.OrderedDict(sorted(extFile.items()))
+    res=[]
+    for oe in ordExt:
+        for f in sorted(extFile[oe]):
+            res.append(f)
+    return res
+
+def main(argv):
+    d=argv[0]
+    files=listingDirSortedByExt(d)
+    for f in files:
+        print(f) 
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

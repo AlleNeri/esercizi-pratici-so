@@ -1,3 +1,4 @@
+#/bin/python
 import os, sys
 from stat import S_ISDIR
 
