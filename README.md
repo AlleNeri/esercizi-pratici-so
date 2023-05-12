@@ -18,6 +18,11 @@ Esercizi di preparazione alla prova pratica dell'esame di sistemi operativi. [Te
 - `readdir`: legge una per volta le entry di una directory. Il formato di lettura è `struct dirent` che contiene inode, tipo, nome e altre informazioni sul file. Usata con `opendir`, `closedir` per aprire e chiudere la directory. Corollario: ne esiste anche la versione con gestione tramite file descriptor, `fdopendir`. Anche questa non è una system call, ma è spesso utile :P. [`/2020-02-21/es2/absls.c`]
 
 # Syscall usate in python
+- `os.stat`: ritorna la stat del file nel path specificato. Corollario: esistono alcune funzioni per indagare il tipo di file della stat, come `S_ISDIR`, nel modulo `stat`. [`/2019-09-18/es3/searchln`, `/2019-07-15/es3/ultimoPrimoModificato`]
+- `os.listdir`: elenca le entry di una directory. [`/2019-09-18/es3/searchln`, `/2019-07-15/es3/ultimoPrimoModificato`]
+- `os.path.is_`: insieme di funzioni per distinguere il tipo di file dato il path; `abs`, `dir`, `file`, `link`, etc... [`/2020-02-21/es3/listingDir`]
+- `os.path.splitext`: splitta l'estensione dal path. [`/2020-02-21/es3/listingDir`]
+- `path.join`: molto utile a concatenare il path ti una directory al nome di un file. [`/2019-09-18/es3/searchln`, `/2019-09-18/es3/searchln`, `/2019-07-15/es3/ultimoPrimoModificato`]
 
 ## Domande
 - Come riconoscere un file eseguibile da una libreria shared? [`/2021-07-15/es2/autolancia.c`] [Soluzione](https://github.com/cosimopp/prove-pratiche-so/blob/main/2021.07.15/ex1.c): `exec()`: ritorna solo se è avvenuto un errore; se il parametro sara una libreria shared allora si verificherà un errore. **Soluzione fornita dal prof**: "utilizzare fantasia e soluzioni proposte online"; in particolare in aula ha proposto l'approccio contrario, ovvero provare ad aprire il file come libreria shared e, se nel caso non funzioni, eseguire come normale eseguibile.

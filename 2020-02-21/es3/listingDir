@@ -1,5 +1,4 @@
-#/bin/python
-
+#!/bin/python
 import collections
 import os, sys
 
