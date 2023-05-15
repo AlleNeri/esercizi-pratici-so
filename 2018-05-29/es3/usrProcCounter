@@ -1,0 +1,58 @@
+#!/usr/bin/python
+import os
+import re
+from stat import S_ISDIR
+from typing import Collection
+
+def getStatus(path):
+    file="status"
+    #if the status exists it will be returned
+    try:
+        return open(os.path.join(path, file))
+    except:
+        pass
+
+def procStatusList():
+    procDir="/proc/"
+    files=[]
+    #iterating the directory to read all process'status
+    for f in os.listdir(procDir):
+        filePath=os.path.join(procDir, f)
+        fileStat=os.stat(filePath)
+        if S_ISDIR(fileStat.st_mode):
+            status=getStatus(filePath)
+            if status:
+                files.append(status)
+    return files
+
+def getUid(status):
+    uids=[]
+    #iterate the process'status to read the uid
+    for s in status:
+        for line in s.readlines():
+            if line.startswith("Uid:"):
+                uids.append(re.findall(r"\d+", line))
+                break
+    return uids
+
+def uidsCounter(uids):
+    counter=dict()
+    #count user occurrence
+    for line in uids:
+        pos=0
+        for uid in line:
+            if counter.get(uid)==None:
+                counter[uid]=[0, 0, 0, 0]
+            counter[uid][pos]+=1
+            pos+=1
+    return counter
+
+def main():
+    status=procStatusList()
+    uids=getUid(status)
+    counter=uidsCounter(uids)
+    for k in counter.keys():
+        print(f"{k} {counter[k][0]} {counter[k][1]} {counter[k][2]} {counter[k][3]}")
+
+if __name__ == "__main__":
+    main()
