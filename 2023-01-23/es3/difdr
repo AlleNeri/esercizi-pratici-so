@@ -1,0 +1,55 @@
+#!/bin/python
+import os
+import sys
+import shutil
+
+def filesInDir(d):
+    files=[]
+    #visiting the tree
+    for f in os.listdir(d):
+        filePath=os.path.join(d, f)
+        if os.path.isdir(filePath):
+            subDirFiles=filesInDir(filePath)
+            for i in range(len(subDirFiles)):
+                subDirFiles[i]=f+"/"+subDirFiles[i]
+            files+=subDirFiles
+        else:
+            files.append(f)
+    return files
+
+def filesComuni(dir1, dir2):
+    filesInDir1=filesInDir(dir1)
+    filesInDir2=filesInDir(dir2)
+    comuni=[]
+    #get the file in both directorys
+    for f1 in filesInDir1:
+        for f2 in filesInDir2:
+            if f1==f2:
+                comuni.append(f1)
+    return comuni
+
+def main(dir1, dir2, newDir1, newDir2):
+    print(dir1, dir2)
+    #errors
+    if not os.path.isdir(dir1) and not os.path.isdir(dir2):
+        print("Error: argv")
+        return
+    comuni=filesComuni(dir1, dir2)
+    if not os.path.exists(newDir1):
+        os.makedirs(newDir1)
+    if not os.path.exists(newDir2):
+        os.makedirs(newDir2)
+    for com in comuni:
+        newFile1=newDir1+"/"+com
+        newFile2=newDir2+"/"+com
+        d1=os.path.dirname(newFile1)
+        d2=os.path.dirname(newFile2)
+        if not os.path.exists(d1):
+            os.makedirs(d1)
+        if not os.path.exists(d2):
+            os.makedirs(d2)
+        shutil.copy(dir1+"/"+com, newDir1+"/"+com)
+        shutil.copy(dir2+"/"+com, newDir2+"/"+com)
+
+if __name__ == "__main__":
+    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
