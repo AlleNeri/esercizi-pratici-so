@@ -1,0 +1,41 @@
+#! /bin/python
+import os, sys
+from stat import S_ISDIR
+
+class File:
+    path: str
+    time: float
+    def __init__(self, path, time):
+        self.path=path
+        self.time=time
+
+def searchPattern(pattern, directory):
+    dirEntry=listDirEntry(directory)
+    fileWithPattern=[]
+    for i in range(len(dirEntry)):
+        openedFile=open(dirEntry[i].path, "r+")
+        content=openedFile.read()
+        if pattern in content:
+            fileWithPattern.append(dirEntry[i])
+    return fileWithPattern
+
+def listDirEntry(d):
+    arr=[]
+    for f in os.listdir(d):
+        filePath=os.path.join(d, f)
+        fileStat=os.stat(filePath)
+        if S_ISDIR(fileStat.st_mode):
+            subdir=listDirEntry(filePath)
+            arr+=subdir
+        else:
+            arr.append(File(filePath, fileStat.st_mtime))
+    return arr
+
+def main(d):
+    files=searchPattern(d[0], os.getcwd())
+    files.sort(key=lambda x: x.time, reverse=True)
+    for i in range(len(files)):
+        print(files[i].path)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
