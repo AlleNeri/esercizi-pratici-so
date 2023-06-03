@@ -1,0 +1,20 @@
+#!/bin/python
+import sys
+import os
+
+def main(directory):
+    lines=dict()
+    dirent=os.listdir(directory)
+    for i in dirent:
+        file=open(directory+"/"+i, "r+")
+        l=file.readlines()
+        for i in range(len(l)):
+            if not i in lines.keys():
+                lines[i]=len(l[i])
+            else:
+                lines[i]+=len(l[i])
+    for index in lines:
+        print(f"{index+1}: {lines[index]}")
+
+if __name__ == "__main__":
+    main(sys.argv[1])
