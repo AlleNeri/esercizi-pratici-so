@@ -1,0 +1,22 @@
+#!/bin/python
+import os
+import sys
+import shutil
+
+def my_copy(src, dst, *, follow_symlinks=True):
+    if os.path.isfile(dst):
+        with open(dst, "r") as inFile1:
+            with open(src, "r") as inFile2:
+                content=inFile1.read()
+                content+=inFile2.read()
+                with open(dst, "w") as outFile:
+                    outFile.write(content)
+    elif not os.path.isdir(dst):
+        shutil.copy2(src, dst, follow_symlinks=follow_symlinks)
+
+def main(dirs):
+    shutil.copytree(dirs[0], dirs[2], dirs_exist_ok=True)
+    shutil.copytree(dirs[1], dirs[2], copy_function=my_copy, dirs_exist_ok=True)
+
+if __name__=="__main__":
+    main(sys.argv[1:])
