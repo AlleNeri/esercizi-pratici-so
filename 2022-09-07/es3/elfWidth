@@ -1,0 +1,37 @@
+#!/bin/python3
+import binascii
+import sys
+import os
+from stat import S_ISDIR
+
+ELF_MAGIC="7f454c46020101000000000000000000"
+
+def isElf(file):
+    magic=getMagic(file)
+    if magic == ELF_MAGIC:
+        return True
+    return False
+
+def getMagic(file):
+    tmp=""
+    with open(file, "rb") as myBin:
+        header=myBin.read(24)
+        tmp=str(binascii.hexlify(header))[2:34]
+    return tmp
+
+def main(directories):
+    counter=0
+    for d in directories:
+        for f in os.listdir(d):
+            filePath=os.path.join(d, f)
+            if os.path.isdir(filePath):
+                continue
+            if isElf(filePath):
+                counter+=os.path.getsize(filePath)
+    print(counter)
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        main([os.getcwd()])
+    else:
+        main(sys.argv[1:])

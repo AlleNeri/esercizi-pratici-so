@@ -3,11 +3,11 @@ Esercizi di preparazione alla prova pratica dell'esame di sistemi operativi. [Te
 
 # System Call e funzioni utili usate in C
 - `dlopen`: apertura di una shared lib, ritorna un handler. Corollario: `dlsym`(passato l'handler e un simbolo ne ritorna la funzione associata), `dlerror`(ritorna un errore o NULL) e `dlclose`(performa la corretta chiusura della shared lib). [`/2021-07-15/es1/lancia.c`, `/2021-07-15/es2/autolancia.c`]
-- `execv`: esegue un comando passato come parametro con una lista di parametri. Corollario: esistono altre varianti della funzione `exec` (`execv`, `execve`, `execvp`, `execl`, `execlp`, `execs`, ...), per informazioni dettagliate leggere il manuale. [`/2021-07-15/es2/autolancia.c`, `/2023-01-19/es1/stdin2pipe.c`, `/2023-01-19/es2/stdin2pipe.c`]
+- `execv`: esegue un comando passato come parametro con una lista di parametri. Corollario: esistono altre varianti della funzione `exec` (`execv`, `execve`, `execvp`, `execl`, `execlp`, `execs`, ...), per informazioni dettagliate leggere il manuale. [`/2021-07-15/es2/autolancia.c`, `/2023-01-19/es1/stdin2pipe.c`, `/2023-01-19/es2/stdin2pipe.c`, `/2022-09-07/es1/rilancia.c`, `/2022-09-07/es2/rilancia.c`]
 - `execvp`: esegue un comando con parametri nel formato: parametro1=comando da eseguire, parametro2=array argv(col comando stesso come primo elemento e possibilmente NULL come ultimo, ma non sembra catastrofico non farlo). Corollario: vedere `execv`. [`/2019-09-18/es1/para.c`, `/2019-09-18/es2/paran3.c`, `/2018-07-18/es2/count.c`]
-- `fork`: crea un processo figlio che continuerà l'esecuzione del codice dalla chiamata della funzione in poi. Ha come valore di ritorno 0 per il figlio e il pId del figlio per il padre. [`/2022-07-15/es2/autolancia.c`, `/2019-09-18/es1/para.c`, `/2019-09-18/es2/paran3.c`, `/2018-05-29/es1/pcmp.c`, `/2018-05-29/es1/pcmp.c`, `/2023-02-16/es1/pcp.c`, `/2023-02-16/es2/pcp.c`, `/2023-01-19/es1/stdin2pipe.c`, `/2023-01-19/es2/stdin2pipe.c`]
+- `fork`: crea un processo figlio che continuerà l'esecuzione del codice dalla chiamata della funzione in poi. Ha come valore di ritorno 0 per il figlio e il pId del figlio per il padre. [`/2022-07-15/es2/autolancia.c`, `/2019-09-18/es1/para.c`, `/2019-09-18/es2/paran3.c`, `/2018-05-29/es1/pcmp.c`, `/2018-05-29/es1/pcmp.c`, `/2023-02-16/es1/pcp.c`, `/2023-02-16/es2/pcp.c`, `/2023-01-19/es1/stdin2pipe.c`, `/2023-01-19/es2/stdin2pipe.c`, `/2022-09-07/es1/rilancia.c`, `/2022-09-07/es2/rilancia.c`]
 - `wait`: attende la terminazione di un processo filgio e ritorna il numero di figli ancora non terminati. [`/2019-09-18/es1/para.c`, `/2019-09-18/es2/paran3.c`, `/2018-05-29/es1/pcmp.c`, `/2018-05-29/es1/pcmp.c`, `/2023-02-16/es1/pcp.c`, `/2023-02-16/es2/pcp.c`]
-- `waitpid`: variante di `wait`, attende la terminazione di un processo dato il pid. Ritorna uno stato. Corollario: per la valutazione dello stato di ritorno esistono funzioni utili come `WIFEXITED` (per informazioni dettagliate leggere il manuale). [`/2021-07-15/es2/autolancia.c`, `/2018-07-18/es2/count.c`, `/2023-01-19/es1/stdin2pipe.c`, `/2023-01-19/es2/stdin2pipe.c`]
+- `waitpid`: variante di `wait`, attende la terminazione di un processo dato il pid. Ritorna uno stato. Corollario: per la valutazione dello stato di ritorno esistono funzioni utili come `WIFEXITED` (per informazioni dettagliate leggere il manuale). [`/2021-07-15/es2/autolancia.c`, `/2018-07-18/es2/count.c`, `/2023-01-19/es1/stdin2pipe.c`, `/2023-01-19/es2/stdin2pipe.c`, `/2022-09-07/es1/rilancia.c`, `/2022-09-07/es2/rilancia.c`]
 - `remove`: un'interfaccia unificata per `unlink`(rimuove il nome di un file dal file system) e `rmdir`(rimuove una directory). [`/2020-02-21/es1/abslink.c`, `/2023-01-23/es2/fifosig.c`, `/2022-01-18/es1/abssymlink.c`, `/2022-01-18/es2/cpsymlink.c`]
 - `symlink`: crea un link simbolico di un file con un nome specificato. Corollario: esiste anche `link` che fa la stessa identica cosa, ma crea un link fisico. [`/2020-02-21/es1/symlink.c`, `/2022-01-18/es1/abssymlink.c`, `/2022-01-18/es1/abssymlink.c`]
 - `sigemptyset`: rimuove l'handling di tutti i segnali da un set(di tipo `sigset_t`) passato in input(una maschera). Corollario: vedere altri comandi sui segnali e il manuale. [`/2018-07-18/es1/sigcounter.c`, `/2023-01-23/es2/test.c`]
@@ -28,22 +28,25 @@ Esercizi di preparazione alla prova pratica dell'esame di sistemi operativi. [Te
 - `fread`: lettura di byte da una stream. [`/2023-02-16/es1/pcp.c`, `/2023-02-16/es2/pcp.c`]
 - `fwrite`: scrittura di byte su una stream. [`/2023-02-16/es1/pcp.c`, `/2023-02-16/es2/pcp.c`]
 - `dup2`: duolica un file descriptor. [`/2023-01-19/es1/stdin2pipe.c`, `/2023-01-19/es2/stdin2pipe.c`]
+- `time`: restituzione dei secondi passati da Epoch(primogennaiomillenovecentoblablabla...). [`/2022-09-07/es2/rilancia.c`]
 
 # System Call e funzioni utili usate in python
 - `os.stat`: ritorna la stat del file nel path specificato. Corollario: esistono alcune funzioni per indagare il tipo di file della stat, come `S_ISDIR`, nel modulo `stat`. [`/2021-09-18/es3/searchln`, `/2019-07-15/es3/ultimoPrimoModificato`, `/2022-01-18/es3/patternInSubtree`]
-- `os.listdir`: elenca le entry di una directory. [`/2019-09-18/es3/searchln`, `/2019-07-15/es3/ultimoPrimoModificato`, `/2018-05-29/es3/usrProcCounter`, `/2023-01-23/es3/difdr`, `/2022-01-18/es3/patternInSubtree`, `/2023-02-16/es3/ccpl`]
-- `os.path.is_`: insieme di funzioni per distinguere il tipo di file dato il path; `abs`, `dir`, `file`, `link`, etc... [`/2020-02-21/es3/listingDir`, `/2018-05-29/es3/usrProcCounter`, `/2023-01-23/es3/difdr`, `/2023-01-19/es3/mergeDir`]
+- `os.listdir`: elenca le entry di una directory. [`/2019-09-18/es3/searchln`, `/2019-07-15/es3/ultimoPrimoModificato`, `/2018-05-29/es3/usrProcCounter`, `/2023-01-23/es3/difdr`, `/2022-01-18/es3/patternInSubtree`, `/2023-02-16/es3/ccpl`, `/2022-09-07/es3/elfWidth`]
+- `os.path.is_`: insieme di funzioni per distinguere il tipo di file dato il path; `abs`, `dir`, `file`, `link`, etc... [`/2020-02-21/es3/listingDir`, `/2018-05-29/es3/usrProcCounter`, `/2023-01-23/es3/difdr`, `/2023-01-19/es3/mergeDir`, `/2022-09-07/es3/elfWidth`]
 - `os.path.splitext`: splitta l'estensione dal path. [`/2020-02-21/es3/listingDir`]
-- `path.join`: molto utile a concatenare il path ti una directory al nome di un file. [`/2019-09-18/es3/searchln`, `/2019-09-18/es3/searchln`, `/2019-07-15/es3/ultimoPrimoModificato`, `/2018-05-29/es3/usrProcCounter`, `/2023-01-23/es3/difdr`, `/2022-01-18/es3/patternInSubtree`]
+- `path.join`: molto utile a concatenare il path ti una directory al nome di un file. [`/2019-09-18/es3/searchln`, `/2019-09-18/es3/searchln`, `/2019-07-15/es3/ultimoPrimoModificato`, `/2018-05-29/es3/usrProcCounter`, `/2023-01-23/es3/difdr`, `/2022-01-18/es3/patternInSubtree`, `/2022-09-07/es3/elfWidth`]
 - `os.path.exists`: verifica se esiste il path passato come parametro. [`/2023-01-23/es3/difdr`]
 - `os.path.dirname`: restituisce la parte di path in una stringa che rappresenta a sua volta un path. [`/2023-01-23/es3/difdr`]
+- `os.path.getsize`: restituisce la dimensione di un file in byte. [`/2022-09-07/es3/elfWidth`]
 - `shutil.copy`: creazione della copia di un file. [`/2023-01-23/es3/difdr`, `/2023-01-19/es3/mergeDir`]
 - `shutil.copytree`: creazione della copia di un intero sottoalbero. Corollario: è possibile personalizzare la funzione di copia. [`/2023-01-19/es3/mergeDir`]
 - `os.makedirs`: creazione di una directory. [`/2023-01-23/es3/difdr`]
-- `os.getcwd`: ritorna il nome della directory nella quale viene lanciato l'eseguibile. [`/2022-01-18/es3/patternInSubtree`]
-- `open`: apertura di un file, simile a C. Corollario: spesso utilizzata assieme a `read` che legge l'intero contenuto o `readlines` che ritorno aun array con tutte le linee del file. [`/2022-01-18/es3/patternInSubtree`, `/2023-02-16/es3/ccpl`, `/2023-01-19/es3/mergeDir`]
+- `os.getcwd`: ritorna il nome della directory nella quale viene lanciato l'eseguibile. [`/2022-01-18/es3/patternInSubtree`, `/2022-09-07/es3/elfWidth`]
+- `open`: apertura di un file, simile a C. Corollario: spesso utilizzata assieme a `read` che legge l'intero contenuto o `readlines` che ritorno aun array con tutte le linee del file. [`/2022-01-18/es3/patternInSubtree`, `/2023-02-16/es3/ccpl`, `/2023-01-19/es3/mergeDir`, `/2022-09-07/es3/elfWidth`]
 - `sys.stdin`: lettura diretta dello standard input. [`/2018-07-18/es3/minimalShell`]
 - `subprocess.run`: esecuzione di un comando shell. [`/2018-07-18/es3/minimalShell`]
+- `binascii.hexlify`: rappresentazione ascii del binario. [`/2022-09-07/es3/elfWidth`]
 
 ## Domande
 - Come riconoscere un file eseguibile da una libreria shared? [`/2021-07-15/es2/autolancia.c`] [Soluzione](https://github.com/cosimopp/prove-pratiche-so/blob/main/2021.07.15/ex1.c): `exec()`: ritorna solo se è avvenuto un errore; se il parametro sara una libreria shared allora si verificherà un errore. **Soluzione fornita dal prof**: "utilizzare fantasia e soluzioni proposte online"; in particolare in aula ha proposto l'approccio contrario, ovvero provare ad aprire il file come libreria shared e, se nel caso non funzioni, eseguire come normale eseguibile.
