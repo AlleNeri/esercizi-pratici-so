@@ -1,4 +1,5 @@
 #!/bin/python3
+import subprocess
 import binascii
 import sys
 import os
@@ -18,19 +19,22 @@ def getMagic(file):
         tmp=str(binascii.hexlify(header))[2:34]
     return tmp
 
-def main(directories):
-    counter=0
-    for d in directories:
-        for f in os.listdir(d):
-            filePath=os.path.join(d, f)
-            if os.path.isdir(filePath):
-                continue
-            if isElf(filePath):
-                counter+=os.path.getsize(filePath)
-    print(counter)
+def main(directory):
+    for ent in os.listdir(directory):
+        filePath=os.path.join(directory, ent)
+        if os.path.isdir(filePath):
+            continue
+        if isElf(filePath):
+            continue
+        if ent=="execNoElf":
+            continue
+        try:
+            subprocess.call(filePath)
+        except:
+            continue
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        main([os.getcwd()])
+        main(os.getcwd())
     else:
-        main(sys.argv[1:])
+        main(sys.argv[1])
