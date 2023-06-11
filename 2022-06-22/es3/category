@@ -1,0 +1,28 @@
+#! /bin/python
+import os, sys, magic
+
+def main(directory):
+    total=dict()
+    for ent in os.listdir(directory):
+        filePath=os.path.join(directory, ent)
+        if os.path.isdir(filePath):
+            if total.get("directory")==None:
+                total["directory"]=[]
+            total["directory"].append(ent)
+            continue
+        cat=magic.from_file(filePath)
+        if total.get(cat)==None:
+            total[cat]=[]
+        total[cat].append(ent)
+    for key in total.keys():
+        elem=total[key]
+        print(key, end=": ")
+        for e in elem:
+            print(e, end=", ")
+        print()
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        main(os.getcwd())
+    else:
+        main(sys.argv[1])
