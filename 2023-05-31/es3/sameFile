@@ -1,0 +1,29 @@
+#!/bin/python
+import os, sys
+
+files=dict()
+
+def getFile(directory):
+    for ent in os.listdir(directory):
+        filePath=os.path.join(directory, ent)
+        fileStat=os.stat(filePath)
+        if files.get(fileStat.st_ino)==None:
+            files[fileStat.st_ino]=[]
+        files[fileStat.st_ino].append(filePath)
+        if os.path.isdir(filePath):
+            getFile(filePath)
+
+def main(directory):
+    getFile(directory)
+    for key in files.keys():
+        l=len(files[key])
+        if l>1:
+            print(f"{l} link for inode {key}:")
+            for name in files[key]:
+                print(f"\t{name}")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        main(os.getcwd())
+    else:
+        main(sys.argv[1])
