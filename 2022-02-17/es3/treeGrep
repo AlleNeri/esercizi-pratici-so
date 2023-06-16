@@ -1,0 +1,33 @@
+#!/bin/python
+import sys, os, operator
+
+class myFile:
+    def __init__(self, name, time) -> None:
+        self.name=name
+        self.time=time
+
+filesGrepd=[]
+
+def add2dict(path):
+    fileStat=os.stat(path)
+    filesGrepd.append(myFile(path, fileStat.st_mtime))
+
+def fillFiles(directory, pattern):
+    for ent in os.listdir(directory):
+        filePath=os.path.join(directory, ent)
+        if os.path.isdir(filePath):
+            fillFiles(filePath, pattern)
+        else:
+            with open(filePath) as openedFile:
+                if pattern in openedFile.read():
+                    add2dict(filePath)
+
+def main(directory, pattern):
+    fillFiles(directory, pattern)
+    fileSorted=sorted(filesGrepd, key=operator.attrgetter('time'))
+    for i in range(len(fileSorted)):
+        print(fileSorted[i].name)
+
+if __name__ == "__main__":
+    print(sys.argv)
+    main(os.getcwd(), sys.argv[1])
