@@ -1,0 +1,15 @@
+#!/bin/python
+import os, sys
+
+def main(directory):
+    for ent in os.listdir(directory):
+        filePath=os.path.join(directory, ent)
+        if os.path.isdir(filePath):
+            main(filePath)
+        elif os.path.islink(filePath):
+            lnk2=os.readlink(filePath)
+            if not os.path.isabs(lnk2):
+                os.remove(filePath)
+
+if __name__ == "__main__":
+    main(sys.argv[1])
