@@ -1,0 +1,33 @@
+#!/bin/python
+import getpass, pwd, os
+
+PROC_PATH="/proc"
+STATUS_FILE="status"
+CMD_FILE="exe"
+PROP="VmSize:"
+
+def main():
+    username=getpass.getuser()
+    for ent in os.listdir(PROC_PATH):
+        procPath=os.path.join(PROC_PATH, ent)
+        if pwd.getpwuid(os.stat(procPath).st_uid).pw_name!=username:
+            continue
+        cmdPath=os.path.join(procPath, CMD_FILE)
+        if not os.path.exists(cmdPath):
+            continue
+        cmd=os.readlink(cmdPath)
+        _, cmd=os.path.split(cmd)
+        statusPath=os.path.join(procPath, STATUS_FILE)
+        if not os.path.exists(statusPath):
+            continue
+        occupation=""
+        with open(statusPath) as statusOpened:
+            lines=statusOpened.readlines()
+            for line in lines:
+                if PROP in line:
+                    occupation=line.removeprefix(PROP)
+                    break
+        print(f"{cmd}: {occupation}")
+
+if __name__ == "__main__":
+    main()

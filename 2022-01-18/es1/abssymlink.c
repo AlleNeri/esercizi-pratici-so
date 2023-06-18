@@ -8,6 +8,14 @@
 #include "../../lib/bool.h"
 
 /**
+* Join dir and file in a path.
+* @param dir the directory path.
+* @param file the file name.
+* @return the file path.
+*/
+char * joinPath(char *, char *);
+
+/**
  * Get the dir of a file.
  * @param f the file path.
  * @return the directory path.
