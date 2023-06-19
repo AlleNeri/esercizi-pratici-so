@@ -1,0 +1,33 @@
+#!/bin/python3
+import os, sys
+
+def fileByDir(directory):
+    allFiles=dict()
+    for ent in os.listdir(directory):
+        filePath=os.path.join(directory, ent)
+        if os.path.isdir(filePath):
+            tmp=fileByDir(filePath)
+            for key in tmp.keys():
+                if allFiles.get(key)==None:
+                    allFiles[key]=[]
+                allFiles[key]+=tmp[key]
+            continue
+        if allFiles.get(ent)==None:
+            allFiles[ent]=[]
+        allFiles[ent].append(directory)
+    return allFiles
+
+def main(directory):
+    files=fileByDir(directory)
+    if directory.endswith("/"):
+        directory=directory.removesuffix("/")
+    for key in files.keys():
+        print(f"{key}: ", end="")
+        for elem in files[key]:
+            if elem.startswith(directory):
+                elem="."+elem.removeprefix(directory)
+            print(f"{elem} ", end="")
+        print()
+
+if __name__ == "__main__":
+    main(sys.argv[1])
