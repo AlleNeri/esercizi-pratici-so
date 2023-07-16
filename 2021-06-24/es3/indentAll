@@ -1,0 +1,15 @@
+#!/bin/python
+import subprocess, os, sys
+
+def main(directory):
+    for f in os.listdir(directory):
+        actual=os.path.join(directory, f)
+        if os.path.isfile(actual):
+            _, ext=os.path.splitext(actual)
+            if ext == ".c" or ext == ".h":
+                subprocess.run(["ex", "-n", "'+norm!gg=G'", "+qw", actual])
+        elif os.path.isdir(actual):
+            main(actual)
+
+if __name__ == "__main__":
+    main(sys.argv[1])
