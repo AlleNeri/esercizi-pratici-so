@@ -1,0 +1,14 @@
+#!/bin/python
+import sys, multiprocessing, shlex, subprocess
+
+def main(cmdArr):
+    cmdStr=" ".join(cmdArr)
+    cmds=cmdStr.split("//")
+    cmdsScanned=[]
+    for c in cmds:
+        cmdsScanned.append(shlex.split(c))
+    with multiprocessing.Pool(len(cmdsScanned)) as p:
+        p.map(subprocess.run, cmdsScanned)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

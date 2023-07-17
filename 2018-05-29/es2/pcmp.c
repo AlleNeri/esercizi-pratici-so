@@ -49,7 +49,7 @@ int main(int argc, char ** argv) {
 	//get j value
 	int c, n;
 	while((c=getopt(argc, argv, "j:"))!=-1) {
-		if(c!='j') err(EXIT_FAILURE, "ergv j");
+		if(c!='j') err(EXIT_FAILURE, "argv j");
 		n=atoi(optarg);
 	}
 	if(n<=0) err(EXIT_FAILURE, "argv j");
