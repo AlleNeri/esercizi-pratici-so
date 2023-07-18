@@ -1,0 +1,54 @@
+#!/bin/python
+import sys, os
+
+cLines=0
+hLines=0
+makefileLines=0
+
+def countCLines(directory):
+    global cLines
+    for file in os.listdir(directory):
+        filePath=os.path.join(directory, file)
+        if os.path.isdir(filePath):
+            countCLines(filePath)
+        if file.endswith(".c"):
+            with open(filePath, 'r') as f:
+                currentLines=len(f.readlines())
+                cLines+=currentLines
+                print(f"{filePath}\t{currentLines}")
+
+def countHLines(directory):
+    global hLines
+    for file in os.listdir(directory):
+        filePath=os.path.join(directory, file)
+        if os.path.isdir(filePath):
+            countHLines(filePath)
+        if file.endswith(".h"):
+            with open(filePath, 'r') as f:
+                currentLines=len(f.readlines())
+                hLines+=currentLines
+                print(f"{filePath}\t{currentLines}")
+
+def countMakefileLines(directory):
+    global makefileLines
+    for file in os.listdir(directory):
+        filePath=os.path.join(directory, file)
+        if os.path.isdir(filePath):
+            countMakefileLines(filePath)
+        if file.endswith("makefile") or file.endswith("Makefile"):
+            with open(filePath, 'r') as f:
+                currentLines=len(f.readlines())
+                makefileLines+=currentLines
+                print(f"{filePath}\t{currentLines}")
+
+def main(directory):
+    countCLines(directory)
+    print(f"tot .c\t{cLines}")
+    countHLines(directory)
+    print(f"tot .h\t{hLines}")
+    countMakefileLines(directory)
+    print(f"tot Makefile\t{makefileLines}")
+    print(f"tot source\t{cLines+hLines+makefileLines}")
+
+if __name__ == '__main__':
+    main(sys.argv[1])
