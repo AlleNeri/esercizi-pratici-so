@@ -1,0 +1,20 @@
+#!/bin/python
+filePath="/usr/include/asm/unistd_64.h"
+
+def main():
+    syscallArr = []
+    with open(filePath) as fp:
+        line = fp.readline()
+        while line:
+            if line.startswith("#define __NR_"):
+                syscallArr.append(line.split()[1])
+            line = fp.readline()
+    syscallArr = [x[5:] for x in syscallArr]
+    with open("syscallArr.c", "w") as fp:
+        fp.write("char * syscall_name[] = {\n")
+        for syscall in syscallArr:
+            fp.write(f"\t\"{syscall}\",\n")
+        fp.write("};\n")
+
+if __name__ == "__main__":
+    main()
